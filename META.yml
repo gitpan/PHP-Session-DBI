@@ -1,6 +1,6 @@
 ---
 name: PHP-Session-DBI
-version: 0.1
+version: 0.20
 author:
   - 'Burak Gursoy <burak@cpan.org>'
 abstract: Interface to PHP DataBase Sessions
@@ -15,7 +15,7 @@ recommends:
 provides:
   PHP::Session::DBI:
     file: lib/PHP/Session/DBI.pm
-    version: 0.1
+    version: 0.20
 generated_by: Module::Build version 0.2805
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

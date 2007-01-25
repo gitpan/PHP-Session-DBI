@@ -4,7 +4,7 @@ use vars qw($VERSION);
 use base qw(PHP::Session);
 use Carp qw(croak);
 
-$VERSION   = '0.1';
+$VERSION   = '0.20';
 
 sub new {
    my($class, $sid, $opt) = @_;
@@ -120,8 +120,8 @@ sub _slurp_content {
 
 sub DESTROY {
    my $self = shift;
-   delete $self->{db_handle};
    $self->SUPER::DESTROY;
+   delete $self->{db_handle};
 }
 
 1;
