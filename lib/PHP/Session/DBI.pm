@@ -4,7 +4,7 @@ use vars qw($VERSION);
 use base qw(PHP::Session);
 use Carp qw(croak);
 
-$VERSION   = '0.20';
+$VERSION = '0.21';
 
 sub new {
    my($class, $sid, $opt) = @_;
@@ -122,6 +122,7 @@ sub DESTROY {
    my $self = shift;
    $self->SUPER::DESTROY;
    delete $self->{db_handle};
+   return;
 }
 
 1;
@@ -175,6 +176,9 @@ PHP::Session::DBI - Interface to PHP DataBase Sessions
    $session->destroy;
 
 =head1 DESCRIPTION
+
+This document describes version C<0.21> of C<PHP::Session::DBI>
+released on C<18 April 2009>.
 
 PHP::Session::DBI provides a way to read / write PHP database sessions, with
 which you can make your Perl application session shared with PHP.
@@ -329,7 +333,7 @@ Burak GE<252>rsoy <burakE<64>cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright 2007 Burak GE<252>rsoy. All rights reserved.
+Copyright 2007-2009 Burak GE<252>rsoy. All rights reserved.
 
 =head1 LICENSE
 

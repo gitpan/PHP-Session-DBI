@@ -1,12 +1,13 @@
 #!/usr/bin/env perl -w
 use strict;
-BEGIN { do 't/skip.test' or die "Can't include skip.test!" }
+use Test::More;
 
 eval "use Test::Pod::Coverage;1";
-if($@) {
-   plan skip_all => "Test::Pod::Coverage required for testing pod coverage";
+
+if ( $@ ) {
+   plan( skip_all => "Test::Pod::Coverage required for testing pod coverage" );
 }
 else {
-   plan tests => 1;
+   plan( tests => 1 );
    pod_coverage_ok('PHP::Session::DBI', {trustme => [qw/destroy save/]});
 }

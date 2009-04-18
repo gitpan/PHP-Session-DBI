@@ -2,10 +2,11 @@ lib/PHP/Session/DBI.pm
 t/01-pod.t
 t/02-pod-coverage.t
 t/03-simple.t
-t/skip.test
+tools/Build.pm
 Makefile.PL
 Build.PL
 Changes
 MANIFEST
 README
 META.yml
+LICENSE

@@ -1,22 +1,29 @@
 ---
 name: PHP-Session-DBI
-version: 0.20
+version: 0.21
 author:
   - 'Burak Gursoy <burak@cpan.org>'
 abstract: Interface to PHP DataBase Sessions
 license: perl
 resources:
   license: http://dev.perl.org/licenses/
+  repository: http://bitbucket.org/burak/cpan-php-session-dbi/
 requires:
   DBI: 0
   PHP::Session: 0.26
+build_requires:
+  Test::More: 0.40
 recommends:
   DBD::mysql: 0
 provides:
   PHP::Session::DBI:
     file: lib/PHP/Session/DBI.pm
-    version: 0.20
-generated_by: Module::Build version 0.2805
+    version: 0.21
+no_index:
+  directory:
+    - tools
+    - t
+generated_by: Module::Build version 0.32
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2
