@@ -1,49 +1,7 @@
 use strict;
-use Module::Build;
-use File::Spec;
-use IO::File;
+use lib qw( builder );
+use Build;
 
-my $class = Module::Build->subclass(
-                class => 'MBSubclass',
-                code  => raw_subclass(),
-            );
-
-my $mb = $class->new(
-    module_name    => 'PHP::Session::DBI',
-    license        => 'perl',
-    requires       => {
-         'PHP::Session' => '0.26',
-         'DBI'          => 0,
-    },
-    build_requires => {
-        'Test::More' => '0.40',
-    },
-    recommends     => {
-         'DBD::mysql'   => 0,
-    },
-    sign           => 0,
-    dist_author    => 'Burak Gursoy <burak@cpan.org>',
-    create_license => 1,
-    no_index       => {
-        directory => [
-            'tools',
-            't',
-        ]
-    },
-    meta_merge => {
-        resources => {
-            repository => 'http://bitbucket.org/burak/cpan-php-session-dbi/',
-        },
-    },
-);
-
+my $mb = Build->new;
+$mb->change_versions(1);
 $mb->create_build_script;
-
-sub raw_subclass {
-    my $file = File::Spec->catfile( 'tools', 'Build.pm' );
-    my $FH   = IO::File->new;
-    $FH->open( $file, 'r' ) or die "Can not open($file): $!";
-    my $rv = do { local $/; <$FH> };
-    close $FH;
-    return $rv;
-}

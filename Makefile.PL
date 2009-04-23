@@ -1,17 +1,18 @@
-#!perl
+#!/usr/bin/env perl
+use strict;
 use ExtUtils::MakeMaker;
+use lib qw( builder );
+use Build::Spec qw( mm_spec );
+
+my %spec = mm_spec;
 
 WriteMakefile(
-   'NAME'         => 'PHP::Session::DBI',
-   'VERSION_FROM' => 'lib/PHP/Session/DBI.pm',
-   'PREREQ_PM'    => {
-      'PHP::Session' => '0.26',
-      'DBI'          => 0,
-      #'DBD::mysql'   => 0,
-   },
-   ($] >= 5.005 ? (
-   AUTHOR   => 'Burak Gursoy <burak@cpan.org>',
-   ABSTRACT => 'Interface to PHP DataBase Sessions',
-   ) : ()),
-   PL_FILES => {},
+    NAME         => $spec{module_name},
+    VERSION_FROM => $spec{VERSION_FROM},
+    PREREQ_PM    => $spec{PREREQ_PM},
+    PL_FILES     => {},
+    ($] >= 5.005 ? (
+    AUTHOR       => $spec{dist_author},
+    ABSTRACT     => $spec{ABSTRACT},
+    ) : ()),
 );

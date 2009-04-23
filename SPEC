@@ -1,0 +1,15 @@
+{
+    module_name    => 'PHP::Session::DBI',
+    requires       => {
+         'PHP::Session' => '0.26',
+         'DBI'          => 0,
+    },
+    recommends     => {
+         'DBD::mysql'   => 0,
+    },
+    meta_merge => {
+        resources => {
+            repository => 'http://bitbucket.org/burak/cpan-php-session-dbi/',
+        },
+    },
+}
