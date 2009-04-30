@@ -2,8 +2,9 @@ package Build;
 use strict;
 use vars qw( $VERSION );
 use warnings;
+use constant TAINT_SHEBANG => "#!perl -Tw\n";
 
-$VERSION = '0.50';
+$VERSION = '0.60';
 
 use File::Find;
 use File::Spec;
@@ -35,6 +36,7 @@ __PACKAGE__->add_property( build_monolith      => 0  );
 __PACKAGE__->add_property( change_versions     => 0  );
 __PACKAGE__->add_property( vanilla_makefile_pl => 1  );
 __PACKAGE__->add_property( monolith_add_to_top => [] );
+__PACKAGE__->add_property( taint_mode_tests    => 0 );
 
 sub new {
    my $class = shift;
@@ -73,9 +75,37 @@ sub ACTION_dist {
       },
       no_chdir => 1,
    }, "lib";
+   $self->_create_taint_mode_tests      if $self->taint_mode_tests;
    $self->_change_versions( \@modules ) if $self->change_versions;
    $self->_build_monolith(  \@modules ) if $self->build_monolith;
    $self->SUPER::ACTION_dist( @_ );
+}
+
+sub _create_taint_mode_tests {
+   my $self   = shift;
+   require File::Basename;
+   my @tests  = glob 't/*.t';
+   my @taints = map {
+                  my $t = File::Basename::basename( $_ );
+                  my($num,$rest) = split /\-/xms, $t, 2;
+                  "t/$num-taint-mode-$rest";
+               }  @tests;
+
+   for my $i ( 0..$#tests ) {
+      next if $tests[$i] =~ m{ pod[.]t           \z }xms;
+      next if $tests[$i] =~ m{ pod\-coverage[.]t \z }xms;
+      next if $tests[$i] =~ m{ all\-modules\-have\-the\-same\-version[.]t \z }xms;
+      open my $ORIG, '<:raw', $tests[$i]  or die "Can not open file($tests[$i]): $!";
+      open my $DEST, '>:raw', $taints[$i] or die "Can not open file($taints[$i]): $!";
+      print $DEST TAINT_SHEBANG;
+      while ( my $line = readline $ORIG ) {
+         print $DEST $line;
+      }
+      close $ORIG;
+      close $DEST;
+      $self->_write_file( '>>', 'MANIFEST', "$taints[$i]\n");
+   }
+   return;
 }
 
 sub _change_versions {
@@ -186,7 +216,7 @@ sub _build_monolith {
                         if $is_eof && ! $add_pod{ $mod }++;
                   };
          $is_eof ? do { $POD .= $line; }
-                : do {
+                 : do {
                      print { $is_pre ? $BUFFER : $MONO } $line;
                   };
       }
@@ -255,7 +285,7 @@ sub _build_monolith {
    PROVE: {
       warn "\tTESTING MONOLITH\n";
       local $ENV{AUTHOR_TESTING_MONOLITH_BUILD} = 1;
-      my @output = qx(prove -Isingle);
+      my @output = qx(prove -Imonolithic_version);
       print "\t$_" for @output;
       chomp(my $result = pop @output);
       die MONOLITH_TEST_FAIL if $result ne 'Result: PASS';
