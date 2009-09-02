@@ -2,6 +2,9 @@ Revision history for Perl extension PHP::Session::DBI
 
 Time zone is GMT+2.
 
+0.24 Thu Sep  3 01:57:43 2009
+    => Pod & distro fixes.
+
 0.23 Thu Apr 30 17:01:03 2009
     => Bump version.
 

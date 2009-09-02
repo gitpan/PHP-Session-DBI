@@ -1,6 +1,5 @@
 lib/PHP/Session/DBI.pm
 t/03-simple.t
-Makefile.PL
 Build.PL
 Changes
 MANIFEST
